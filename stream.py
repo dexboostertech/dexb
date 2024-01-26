@@ -22,6 +22,6 @@ if response.status_code == 200:
     st.table(df)
 
     # Crear un gráfico de barras del volumen
-    st.bar_chart(df['volumen'])
+    st.bar_chart(df['volume24h'])
 else:
     st.write(f"Error al obtener los datos de la API. Código de estado: {response.status_code}")
