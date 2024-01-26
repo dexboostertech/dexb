@@ -11,17 +11,17 @@ if response.status_code == 200:
     data = response.json()
     results = data['data']['results']
 
-    # Imprimir resultados para inspección
-    print(results)
-
     # Crear un DataFrame con los resultados
     df = pd.DataFrame(results)
 
-    # Mostrar los datos en una tabla utilizando Streamlit
-    st.write("Datos obtenidos de la API:")
-    st.table(df)
+    # Agrupar por "name" y sumar los volúmenes
+    grouped_df = df.groupby('name')['volume24h'].sum().reset_index()
 
-    # Crear un gráfico de barras del volumen
-    st.bar_chart(df['volume24h'])
+    # Mostrar los datos agrupados en una tabla utilizando Streamlit
+    st.write("Datos agrupados por 'name' y sumando los volúmenes:")
+    st.table(grouped_df)
+
+    # Crear un gráfico de barras del volumen por "name"
+    st.bar_chart(grouped_df.set_index('name')['volumen'])
 else:
     st.write(f"Error al obtener los datos de la API. Código de estado: {response.status_code}")
