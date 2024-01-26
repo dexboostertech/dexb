@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import pandas as pd
 
 # Realizar la solicitud a la API
 response = requests.get('https://open-api.dextools.io/free/v2/dex/arbitrum?sort=name&order=asc', 
@@ -9,6 +10,9 @@ response = requests.get('https://open-api.dextools.io/free/v2/dex/arbitrum?sort=
 if response.status_code == 200:
     data = response.json()
     results = data['data']['results']
+
+    # Imprimir resultados para inspección
+    print(results)
 
     # Crear un DataFrame con los resultados
     df = pd.DataFrame(results)
