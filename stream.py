@@ -1,24 +1,18 @@
 import streamlit as st
 import requests
 
-# Función para obtener datos de usuarios
-def get_user_data(user_id):
-    url = f'https://jsonplaceholder.typicode.com/users/{user_id}'
-    response = requests.get(url)
-    data = response.json()
-    return data
+# Realizar la solicitud a la API
+response = requests.get('https://open-api.dextools.io/free/v2/dex/arbitrum?sort=name&order=asc', 
+                        headers={'accept': 'application/json', 'X-BLOBR-KEY': 'Kf8DMH7o176auOp0jD9YYHNnyqEzJc6P'})
 
-# Interfaz de usuario con Streamlit
-st.title('Información de Usuario')
-user_id = st.text_input('Introduce el ID del usuario (1-10)')
-if user_id:
-    try:
-        user_data = get_user_data(user_id)
-        st.write(f"ID: {user_data['id']}")
-        st.write(f"Nombre de usuario: {user_data['username']}")
-        st.write(f"Nombre: {user_data['name']}")
-        st.write(f"Email: {user_data['email']}")
-        st.write(f"Teléfono: {user_data['phone']}")
-    except Exception as e:
-        st.write('Error al obtener datos del usuario. Por favor, introduce un ID válido (1-10).')
+# Verificar si la solicitud fue exitosa
+if response.status_code == 200:
+    data = response.json()
+    results = data['data']['results']
+
+    # Mostrar los datos en una tabla utilizando Streamlit
+    st.write("Datos obtenidos de la API:")
+    st.table(results)
+else:
+    st.write(f"Error al obtener los datos de la API. Código de estado: {response.status_code}")
 
